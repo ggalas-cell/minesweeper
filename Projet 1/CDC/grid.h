@@ -1,11 +1,16 @@
+
 #pragma once
 #include "cell.h"
 struct Grid
 {
-	
-	
-	int line= Display(Cell* cell, const char* line, const char* space);
+	int column;
+	int line;
+	Cell** cells;
 };
 
-void Lines(Grid* grid);
+void Initialyse(Grid* grid,int column, int line);
+void Display(Grid* grid);
+void freegrid(Grid* grid)
 
+
+    

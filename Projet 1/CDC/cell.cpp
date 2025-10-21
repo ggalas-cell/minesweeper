@@ -1,12 +1,15 @@
 #include  <iostream>
 #include "cell.h"
 
-void Display(Cell* cell, const char* line, const char* space) 
+void Display(Cell* cell) 
 {
-		std::cout << line << line << std::endl;
-		std::cout << space << space << std::endl;
-		std::cout << line << line << std::endl;
-
+    std::cout<< cell->line;
+    std::cout<<'+'<<std::endl;
+    std::cout<<cell->space;
+    std::cout<<'|'<<std::endl;
+    std::cout<< cell->line;s
+    std::cout<<'+'<<std::endl;
+    
 }
 
 

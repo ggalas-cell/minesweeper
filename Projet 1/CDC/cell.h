@@ -3,8 +3,11 @@
 
 struct Cell
 {
-	const char* line = "+---";
-	const char* space = "|   ";
+	char line;
+	bool isMine;
+	int isRevealed;
+	int isFlag;
+	int adjacentMineCount;
 };
 
 void Display(Cell* cell);

@@ -1,16 +1,23 @@
-
 #pragma once
 #include "cell.h"
 struct Grid
 {
-	int column;
-	int line;
+	int columns;
+	int difficulty;
+	int lines;
+	int totalmines;
+	int minesplaced;
+	int randomline;
+	int randomcell;
+	char userEntryGame;
+	int userEntryRow;
+	int userEntryCol;
+	int demine;
 	Cell** cells;
 };
 
-void Initialyse(Grid* grid,int column, int line);
+void Initialise(Grid* grid);
 void Display(Grid* grid);
-void freegrid(Grid* grid)
-
-
-    
+void Freegrid(Grid* grid);
+void CalculateMines(Grid*grid);
+void playgame(Grid*grid);

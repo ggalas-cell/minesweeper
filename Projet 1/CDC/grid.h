@@ -21,3 +21,4 @@ void Display(Grid* grid);
 void Freegrid(Grid* grid);
 void CalculateMines(Grid*grid);
 void playgame(Grid*grid);
+void PlayAgain(Grid* grid);

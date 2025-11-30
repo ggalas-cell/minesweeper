@@ -3,7 +3,7 @@
 
 struct Cell
 {
-	char line;
+    char line;
 	bool isMine;
 	int isRevealed;
 	int isFlag;

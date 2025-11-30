@@ -84,7 +84,7 @@ void Display(Grid* grid)
          std::cout << "   ";
         for (int j = 0; j < grid->columns; j++)
         {
-            std::cout << grid->cells[i][j].line;
+            std::cout << "+---";
         }
         std::cout << "+"<<std::endl;
         if (i < 10)
@@ -173,29 +173,29 @@ void playgame(Grid* grid)       //gameplay
     do
     {
         std::cout<<"Commande (d: deminer, f: drapeau)";         //Commande
-        std::cin>>userEntryGame;
-        if(userEntryGame=='d')      //deminer
+        std::cin>>grid->userEntryGame;
+        if(grid->userEntryGame=='d')      //deminer
         {
             std::cout << "ligne-> ";
             std::cin >> grid->userEntryRow;
             std::cout << "Colonne-> ";
             std::cin >> grid->userEntryCol;
-            if(grid->cells[userEntryRow][userEntryCol].isFlag==1)
+            if(grid->cells[grid->userEntryRow][grid->userEntryCol].isFlag==1)
             {
                 std::cout<<"Case marque veuillez enlever le drapeau d'abord !"<<std::endl;
             }
         }
-        else if(userEntryGame=='f')     //flag
+        else if(grid-> userEntryGame=='f')     //flag
         {
             std::cout << "ligne-> ";
             std::cin >> grid->userEntryRow;
             std::cout << "Colonne-> ";
             std::cin >> grid->userEntryCol;
-            if(grid->cells[userEntryRow][userEntryCol].isFlag==1)
+            if(grid->cells[grid->userEntryRow][grid->userEntryCol].isFlag==1)
             {
-                grid->cells[userEntryRow][userEntryCol].isFlag=0;
+                grid->cells[grid->userEntryRow][grid->userEntryCol].isFlag=0;
             }
-            grid->cells[userEntryRow][userEntryCol].isFlag=1;
+            grid->cells[grid->userEntryRow][grid->userEntryCol].isFlag=1;
         }
         else        //erreur
         {
@@ -206,15 +206,15 @@ void playgame(Grid* grid)       //gameplay
         {
             for(int j=0;j<grid->columns;j++)    
             {    
-                if(grid->cells[userEntryRow][userEntryCol].isMine==cells[userEntryRow][userEntryCol].isFlag)
+                if(grid->cells[grid->userEntryRow][grid->userEntryCol].isMine== grid->cells[grid->userEntryRow][grid->userEntryCol].isFlag)
                 {
                     std::cout<<"Vous avez gagnez !!!"<<std::endl;    
             }   }
         }
-        else if (grid->cells[grid->userEntryRow][grid->userEntryCol].isMine == true)     //game over
+        if (grid->cells[grid->userEntryRow][grid->userEntryCol].isMine == true)     //game over
         {
             grid->cells[grid->userEntryRow][grid->userEntryCol].isRevealed = 1;
-            std::cout << "GAME OVER" << std::endl;
+            std::cout << "\n\n///   GAME OVER   ///" << std::endl;
             for(int i=0;i<grid->lines;i++)
             {
                 for(int j=0;j<grid->columns;j++)
@@ -226,7 +226,27 @@ void playgame(Grid* grid)       //gameplay
                 }
             }
             Display(grid);
-            break;
+            PlayAgain(grid);
         }    
-    }while(grid->cells[grid->userEntryRow][grid->userEntryCol].isRevealed !=1)    
+    } while (grid->cells[grid->userEntryRow][grid->userEntryCol].isRevealed != 1);
+}
+
+void PlayAgain(Grid* grid)
+{
+    char input;
+    std::cout << "Voulez vous rejouer ?( Y / N )";
+    std::cin >> input;
+    switch (input)
+    {
+    case 'y':
+        playgame(grid);
+        break;
+    case 'n':
+        exit(1);
+        break;
+    default:
+        std::cout << "Erreur caractère non valid...\n";
+        std::cout << "Veuillez saisir un autre caractère.";
+        switch (input);
+    }
 }

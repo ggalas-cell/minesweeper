@@ -3,6 +3,6 @@
 
 void Display(Cell* cell)
 {
-    cell->line= "+---";
+    cell->line= '+---';
     std::cout << cell->line;
 }

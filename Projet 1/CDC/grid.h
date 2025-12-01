@@ -5,10 +5,11 @@ struct Grid
 	int columns;
 	int difficulty;
 	int lines;
-	int totalmines;
-	int minesplaced;
-	int randomline;
-	int randomcell;
+	int totalMines;
+	int minesPlaced;
+	int flagPlaced;
+	int randomLine;
+	int randomCell;
 	char userEntryGame;
 	int userEntryRow;
 	int userEntryCol;

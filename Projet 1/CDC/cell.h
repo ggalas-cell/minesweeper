@@ -10,4 +10,4 @@ struct Cell
 	int adjacentMineCount;
 };
 
-void Display(Cell* cell);
+void DisplayCell(Cell* cell);

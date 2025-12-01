@@ -13,17 +13,17 @@ void Initialise(Grid* grid)
     case(1):        //easy 9*9
         grid->lines = 9;
         grid->columns = 9;
-        grid->totalmines = 10;
+        grid->totalMines = 10;
         break;      // medium 16*16
     case(2):
         grid->lines = 16;
         grid->columns = 16;
-        grid->totalmines = 40;
+        grid->totalMines = 40;
         break;
     case(3):        //hard 30*16
         grid->lines = 30;
         grid->columns = 16;
-        grid->totalmines = 99;
+        grid->totalMines = 99;
         break;
     case(4):        //Custom
         std::cout << "Longeur ?";
@@ -31,13 +31,13 @@ void Initialise(Grid* grid)
         std::cout << "Largeur ?";
         std::cin >> grid->columns;
         std::cout << "Nombre de mines ?";
-        std::cin>> grid->totalmines;
+        std::cin>> grid->totalMines;
         break;
     default:        //medium par défaut
     std::cout<<"Difficulté invalide, mode medium selectionnee."<<std::endl;
     grid->lines = 16;
     grid->columns = 16;
-    grid->totalmines = 40;
+    grid->totalMines = 40;
     }
     grid->cells = (Cell**)malloc(sizeof(Cell*) * grid->lines);  //alloué tableau 2D
     if (grid->cells == nullptr)
@@ -58,7 +58,7 @@ void Initialise(Grid* grid)
             grid->cells[i][j].adjacentMineCount = 0;
         }
     }
-
+    grid->flagPlaced = 0; //flag joueur
     grid->userEntryRow = 0;     // guess du joueur (par rangé)
     grid->userEntryCol = 0;     //guess du joueur (par collone)
 }
@@ -130,21 +130,21 @@ void Display(Grid* grid)
 void CalculateMines(Grid* grid)     // intégration des mines dans le tableaux 2D
 {
     srand(time(0));
-    grid->minesplaced = 0;
-    while (grid->minesplaced < grid->totalmines)
+    grid->minesPlaced = 0;
+    while (grid->minesPlaced < grid->totalMines)
     {
-        int randomline = rand() % grid->lines;
-        int randomcell = rand() % grid->columns;
+        int randomLine = rand() % grid->lines;
+        int randomCell = rand() % grid->columns;
 
-        if (grid->cells[randomline][randomcell].isMine == false)
+        if (grid->cells[randomLine][randomCell].isMine == false)
         {
-            grid->cells[randomline][randomcell].isMine = true;
-            grid->minesplaced++;
+            grid->cells[randomLine][randomCell].isMine = true;
+            grid->minesPlaced++;
         }
 
     }
-    std::cout << "Mines :" << grid->minesplaced << std::endl;           // pour debug et verifier si le totale des mines sont bien posé  
-    std::cout << "Mines total :" << grid->totalmines << std::endl;      //totale de mines
+    std::cout << "Mines :" << grid->minesPlaced << std::endl;           // pour debug et verifier si le totale des mines sont bien posé  
+    std::cout << "Mines total :" << grid->totalMines << std::endl;      //totale de mines
 }
 
 void Freegrid(Grid* grid)       // désallouement
@@ -168,16 +168,22 @@ void Freegrid(Grid* grid)       // désallouement
 
 void playgame(Grid* grid)       //gameplay
 {
-    std::cout << "Pour jouez ecrivez les coordonnees de la case a deminee." << std::endl;
-    std::cout << "Quelle case voulez vous deminer ?" << std::endl;
     do
     {
-        std::cout<<"Commande (d: deminer, f: drapeau)";         //Commande
+        
+        system("cls");
+        Display(grid);
+        std::cout << "Pour jouez ecrivez les coordonnees de la case a deminee." << std::endl;
+        std::cout << "Quelle case voulez vous deminer ?" << std::endl;
+        std::cout << "Nombre de mine : "<< grid->totalMines<<"\n";
+        std::cout << "Nombre de flag place : "<<grid->flagPlaced<<"\n\n";
+        std::cout<<"Commande (d: deminer, f: drapeau)\n"; //Commande
+        std::cout << "/-> ";
         std::cin>>grid->userEntryGame;
         if(grid->userEntryGame=='d')      //deminer
         {
             std::cout << "ligne-> ";
-            std::cin >> grid->userEntryRow;
+            std::cin >> grid->userEntryRow;                                 // TO DO : Meilleur démine + ajouter zqsd
             std::cout << "Colonne-> ";
             std::cin >> grid->userEntryCol;
             if(grid->cells[grid->userEntryRow][grid->userEntryCol].isFlag==1)
@@ -196,6 +202,8 @@ void playgame(Grid* grid)       //gameplay
                 grid->cells[grid->userEntryRow][grid->userEntryCol].isFlag=0;
             }
             grid->cells[grid->userEntryRow][grid->userEntryCol].isFlag=1;
+            grid->flagPlaced++;
+            //TO DO BUG : flag qui fait perdre la game 
         }
         else        //erreur
         {
@@ -208,11 +216,13 @@ void playgame(Grid* grid)       //gameplay
             {    
                 if(grid->cells[grid->userEntryRow][grid->userEntryCol].isMine== grid->cells[grid->userEntryRow][grid->userEntryCol].isFlag)
                 {
-                    std::cout<<"Vous avez gagnez !!!"<<std::endl;    
-            }   }
+                    std::cout << "Vous avez gagnez !!!" << std::endl;
+                }   
+            }
         }
         if (grid->cells[grid->userEntryRow][grid->userEntryCol].isMine == true)     //game over
         {
+
             grid->cells[grid->userEntryRow][grid->userEntryCol].isRevealed = 1;
             std::cout << "\n\n///   GAME OVER   ///" << std::endl;
             for(int i=0;i<grid->lines;i++)
@@ -240,6 +250,7 @@ void PlayAgain(Grid* grid)
     {
     case 'y':
         playgame(grid);
+        //remise a zero de toute les mines
         break;
     case 'n':
         exit(1);
